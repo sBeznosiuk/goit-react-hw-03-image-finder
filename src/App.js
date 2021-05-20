@@ -1,61 +1,83 @@
 import React, { Component } from 'react';
-import ContactList from './Components/ContactList';
-import Filter from './Components/Filter';
-import ContactForm from './Components/ContactForm';
+import Button from './Components/Button';
+import ImageGallery from './Components/ImageGallery';
+import Spinner from './Components/Loader';
+import Modal from './Components/Modal';
+import Searchbar from './Components/Searchbar';
+import { getImages, postImages } from './api/api';
 
 class App extends Component {
+  initialState = {
+    query: '',
+    data: [],
+    page: 1,
+    showModal: false,
+  };
+
   state = {
-    contacts: [],
-    filter: '',
+    ...this.initialState,
   };
 
-  addContact = contact => {
-    const doesExists = this.state.contacts.some(
-      item => item.name === contact.name,
-    );
+  componentDidMount() {
+    getImages(this.state.query, this.state.page)
+      .then(({ data }) => this.setState({ data: data.hits }))
+      .then(
+        setTimeout(() => {
+          console.log(this.state.data);
+        }, 5000),
+      );
+    // .then(({ data }) => console.log(data.hits));
+  }
 
-    doesExists
-      ? alert(`${contact.name} is already in contacts.`)
-      : this.setState(prev => ({
-          contacts: [...prev.contacts, contact],
-        }));
+  componentDidUpdate() {
+    getImages(this.state.query, this.state.page)
+      .then(({ data }) => this.setState({ data: data.hits }))
+      .then(
+        setTimeout(() => {
+          console.log(this.state.data);
+        }, 5000),
+      );
+  }
+
+  onSubmit = query => {
+    this.setState({ query: query });
+    console.log(query);
   };
 
-  handleFilter = e => {
-    const { value } = e.target;
-    this.setState({ filter: value });
-  };
-
-  onClickRemove = e => {
-    e.preventDefault();
-    this.setState(prev => ({
-      contacts: [...prev.contacts.filter(i => i.id !== e.target.id)],
+  toggleModal = () => {
+    this.setState(({ showModal }) => ({
+      showModal: !showModal,
     }));
   };
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.contacts !== prevState.contacts) {
-      console.log('updated');
-      localStorage.setItem('Contacts', JSON.stringify(this.state.contacts));
-    }
-  }
-
-  componentDidMount() {
-    const contacts = localStorage.getItem('Contacts');
-    this.setState({ contacts: JSON.parse(contacts) });
-  }
+  handleClick = item => {
+    this.toggleModal();
+    console.log(item.largeImageURL);
+    return item.largeImageURL;
+  };
 
   render() {
     return (
       <>
-        <ContactForm addContact={this.addContact} />
-        <h2>Contacts</h2>
-        <Filter filter={this.handleFilter} />
-        <ContactList
-          contacts={this.state.contacts}
-          filter={this.state.filter}
-          onClickRemove={this.onClickRemove}
+        <Searchbar onSubmit={this.onSubmit} />
+        <ImageGallery
+          apiLink={this.apiLink}
+          toggleModal={this.toggleModal}
+          handleClick={this.handleClick}
+          data={this.state.data}
         />
+        <Button />
+        <Spinner />
+        {/* <img
+          src="https://cdn.pixabay.com/photo/2018/07/31/14/09/hot-3575167_960_720.jpg"
+          alt=""
+          onClick={this.toggleModal}
+        /> */}
+        {this.state.showModal && (
+          <Modal onClose={this.toggleModal}>
+            <img src="" alt="" />
+          </Modal>
+        )}
       </>
     );
   }
