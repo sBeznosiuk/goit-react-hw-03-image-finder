@@ -12,6 +12,7 @@ class App extends Component {
     data: [],
     page: 1,
     showModal: false,
+    largeImage: '',
   };
 
   state = {
@@ -45,15 +46,14 @@ class App extends Component {
   };
 
   toggleModal = () => {
-    this.setState(({ showModal }) => ({
+    this.setState(({ showModal, largeImage }) => ({
       showModal: !showModal,
     }));
   };
 
   handleClick = item => {
     this.toggleModal();
-    console.log(item.largeImageURL);
-    return item.largeImageURL;
+    this.setState({ largeImage: item.largeImageURL });
   };
 
   render() {
@@ -65,17 +65,13 @@ class App extends Component {
           toggleModal={this.toggleModal}
           handleClick={this.handleClick}
           data={this.state.data}
+          largeImage={this.state.largeImage}
         />
         <Button />
         <Spinner />
-        {/* <img
-          src="https://cdn.pixabay.com/photo/2018/07/31/14/09/hot-3575167_960_720.jpg"
-          alt=""
-          onClick={this.toggleModal}
-        /> */}
         {this.state.showModal && (
           <Modal onClose={this.toggleModal}>
-            <img src="" alt="" />
+            <img src={this.state.largeImage} alt="" />
           </Modal>
         )}
       </>

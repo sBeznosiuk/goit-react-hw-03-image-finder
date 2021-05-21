@@ -7,10 +7,7 @@ class ImageGallery extends PureComponent {
       <ul className="ImageGallery">
         {this.props.data.map(item => {
           return (
-            <ImageGalleryItem
-              key={item.id}
-              toggleModal={this.props.toggleModal}
-            >
+            <ImageGalleryItem key={item.id}>
               <img
                 src={item.webformatURL}
                 alt=""
