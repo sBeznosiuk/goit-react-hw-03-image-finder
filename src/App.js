@@ -5,6 +5,7 @@ import Spinner from './Components/Loader';
 import Modal from './Components/Modal';
 import Searchbar from './Components/Searchbar';
 import { getImages, postImages } from './api/api';
+import axios from 'axios';
 
 class App extends Component {
   initialState = {
@@ -54,6 +55,10 @@ class App extends Component {
   handleClick = item => {
     this.toggleModal();
     this.setState({ largeImage: item.largeImageURL });
+  };
+
+  handleLoadMoreButton = () => {
+    axios.post(this.state.data).then(data => console.log(data));
   };
 
   render() {
