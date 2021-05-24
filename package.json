@@ -1,5 +1,5 @@
 {
-  "name": "goit-react-hw-02-phonebook",
+  "name": "goit-react-hw-03-image-finder",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -31,7 +31,7 @@
       "react-app/jest"
     ]
   },
-  "homepage": "https://sbeznosiuk.github.io/goit-react-hw-02-phonebook/",
+  "homepage": "https://sbeznosiuk.github.io/goit-react-hw-03-image-finder/",
   "browserslist": {
     "production": [
       ">0.2%",
