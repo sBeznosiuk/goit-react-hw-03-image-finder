@@ -1,11 +1,11 @@
 import React from 'react';
 
-const ImageGalleryItem = ({ children, id, webformatURL, handleClick }) => {
+const ImageGalleryItem = ({ webformatURL, handleClick, user }) => {
   return (
     <li className="ImageGalleryItem">
       <img
         src={webformatURL}
-        alt=""
+        alt={user}
         className="ImageGalleryItem-image"
         onClick={handleClick}
       />

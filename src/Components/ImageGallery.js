@@ -10,6 +10,7 @@ class ImageGallery extends PureComponent {
             <ImageGalleryItem
               key={item.id}
               id={item.id}
+              user={item.user}
               webformatURL={item.webformatURL}
               handleClick={() => this.props.handleClick(item)}
             />
