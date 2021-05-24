@@ -4,50 +4,39 @@ import ImageGallery from './Components/ImageGallery';
 import Spinner from './Components/Loader';
 import Modal from './Components/Modal';
 import Searchbar from './Components/Searchbar';
-import { getImages, postImages } from './api/api';
-import axios from 'axios';
+import getImages from './api/api';
+import { v4 as uuidv4 } from 'uuid';
 
 class App extends Component {
   initialState = {
     query: '',
     data: [],
     page: 1,
+    perPage: 12,
     showModal: false,
     largeImage: '',
+    showLoader: true,
   };
 
   state = {
     ...this.initialState,
   };
 
-  componentDidMount() {
-    getImages(this.state.query, this.state.page)
-      .then(({ data }) => this.setState({ data: data.hits }))
-      .then(
-        setTimeout(() => {
-          console.log(this.state.data);
-        }, 5000),
-      );
-    // .then(({ data }) => console.log(data.hits));
-  }
-
   componentDidUpdate() {
-    getImages(this.state.query, this.state.page)
-      .then(({ data }) => this.setState({ data: data.hits }))
-      .then(
-        setTimeout(() => {
-          console.log(this.state.data);
-        }, 5000),
-      );
+    getImages(this.state.query, this.state.perPage).then(({ data }) =>
+      this.setState({ data: data.hits }),
+    );
+
+    this.state.showLoader && this.setState({ showLoader: false });
   }
 
   onSubmit = query => {
+    this.state.query !== query && this.setState({ perPage: 12 });
     this.setState({ query: query });
-    console.log(query);
   };
 
   toggleModal = () => {
-    this.setState(({ showModal, largeImage }) => ({
+    this.setState(({ showModal }) => ({
       showModal: !showModal,
     }));
   };
@@ -58,7 +47,14 @@ class App extends Component {
   };
 
   handleLoadMoreButton = () => {
-    axios.post(this.state.data).then(data => console.log(data));
+    const { query, perPage } = this.state;
+
+    getImages(query, perPage).then(res => {
+      this.setState(({ data, perPage }) => ({
+        data: [...data, res.data.hits],
+        perPage: perPage + 12,
+      }));
+    });
   };
 
   render() {
@@ -72,8 +68,10 @@ class App extends Component {
           data={this.state.data}
           largeImage={this.state.largeImage}
         />
-        <Button />
-        <Spinner />
+        {!!this.state.data.length && (
+          <Button handleLoadMoreButton={this.handleLoadMoreButton} />
+        )}
+        {this.state.showLoader && <Spinner />}
         {this.state.showModal && (
           <Modal onClose={this.toggleModal}>
             <img src={this.state.largeImage} alt="" />

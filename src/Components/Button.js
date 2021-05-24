@@ -1,7 +1,7 @@
 import React from 'react';
 
-const Button = () => (
-  <button className="Button" type="button">
+const Button = ({ handleLoadMoreButton }) => (
+  <button className="Button" type="button" onClick={handleLoadMoreButton}>
     Load more
   </button>
 );

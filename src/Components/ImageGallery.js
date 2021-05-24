@@ -7,14 +7,12 @@ class ImageGallery extends PureComponent {
       <ul className="ImageGallery">
         {this.props.data.map(item => {
           return (
-            <ImageGalleryItem key={item.id}>
-              <img
-                src={item.webformatURL}
-                alt=""
-                className="ImageGalleryItem-image"
-                onClick={() => this.props.handleClick(item)}
-              />
-            </ImageGalleryItem>
+            <ImageGalleryItem
+              key={item.id}
+              id={item.id}
+              webformatURL={item.webformatURL}
+              handleClick={() => this.props.handleClick(item)}
+            />
           );
         })}
       </ul>
