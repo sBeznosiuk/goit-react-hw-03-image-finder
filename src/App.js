@@ -24,6 +24,11 @@ class App extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     prevState.query !== this.state.query && this.fetchImages();
+
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: 'smooth',
+    });
   }
 
   fetchImages = () => {
