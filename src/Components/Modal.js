@@ -1,10 +1,14 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { createPortal } from 'react-dom';
 
 const modalRoot = document.querySelector('#modal-root');
 
 class Modal extends Component {
-  state = {};
+  static propTypes = {
+    children: PropTypes.any.isRequired,
+    onClose: PropTypes.func.isRequired,
+  };
 
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);

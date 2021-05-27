@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 const ImageGalleryItem = ({ webformatURL, handleClick, user }) => {
@@ -11,6 +12,12 @@ const ImageGalleryItem = ({ webformatURL, handleClick, user }) => {
       />
     </li>
   );
+};
+
+ImageGalleryItem.propTypes = {
+  handleClick: PropTypes.func.isRequired,
+  user: PropTypes.string.isRequired,
+  webformatURL: PropTypes.string.isRequired,
 };
 
 export default ImageGalleryItem;

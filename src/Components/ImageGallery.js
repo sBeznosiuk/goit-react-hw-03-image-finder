@@ -1,7 +1,12 @@
+import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import ImageGalleryItem from './ImageGalleryItem';
 
 class ImageGallery extends PureComponent {
+  static propTypes = {
+    data: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+    handleClick: PropTypes.func.isRequired,
+  };
   render() {
     return (
       <ul className="ImageGallery">
